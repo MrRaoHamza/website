@@ -40,6 +40,7 @@ const Admin = () => {
   const [newCourseInput, setNewCourseInput] = useState('');
   const [profileForm, setProfileForm] = useState(null);
   const [newSubTitleInput, setNewSubTitleInput] = useState('');
+  const [toast, setToast] = useState(null); // { message: string, type: 'success'|'error' }
 
   // Password Utility State
   const [hashInput, setHashInput] = useState('');
@@ -54,11 +55,17 @@ const Admin = () => {
     }
   }, [hashInput]);
 
+  // Toast helper
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3500);
+  };
+
   useEffect(() => {
-    if (activeTab === 'profile' && data.profileData) {
+    if (activeTab === 'profile' && data.profileData && !profileForm) {
       setProfileForm(JSON.parse(JSON.stringify(data.profileData)));
     }
-  }, [activeTab, data.profileData]);
+  }, [activeTab]); // Only re-initialize form when switching TO profile tab, not on every save
 
   // Auth Handler
   const handleLogin = async (e) => {
@@ -289,6 +296,7 @@ const Admin = () => {
                                   onConfirm: () => {
                                     const updated = data.projects.filter((_, i) => i !== idx);
                                     data.saveProjects(updated);
+                                    showToast('✅ Project deleted!');
                                   }
                                 });
                               }}
@@ -494,6 +502,7 @@ const Admin = () => {
                             updated.push({ ...editingItem.data, id: editingItem.data.slug });
                           }
                           data.saveProjects(updated);
+                          showToast('✅ Project saved successfully!');
                           setEditingItem(null);
                         }}
                         className="flex items-center space-x-1.5 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold transition-colors cursor-pointer"
@@ -559,6 +568,7 @@ const Admin = () => {
                                   onConfirm: () => {
                                     const updated = data.blogPosts.filter((_, i) => i !== idx);
                                     data.saveBlogPosts(updated);
+                                    showToast('✅ Blog post deleted!');
                                   }
                                 });
                               }}
@@ -675,6 +685,7 @@ const Admin = () => {
                             updated.push(editingItem.data);
                           }
                           data.saveBlogPosts(updated);
+                          showToast('✅ Blog post saved successfully!');
                           setEditingItem(null);
                         }}
                         className="flex items-center space-x-1.5 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold transition-colors cursor-pointer"
@@ -1070,6 +1081,7 @@ const Admin = () => {
                             updated.push(editingItem.data);
                           }
                           data.saveEducation(updated);
+                          showToast('✅ Education saved successfully!');
                           setEditingItem(null);
                         }}
                         className="flex items-center space-x-1.5 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold transition-colors cursor-pointer"
@@ -1213,6 +1225,7 @@ const Admin = () => {
                             updated.push(editingItem.data);
                           }
                           data.saveExperience(updated);
+                          showToast('✅ Experience saved successfully!');
                           setEditingItem(null);
                         }}
                         className="flex items-center space-x-1.5 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold transition-colors cursor-pointer"
@@ -1300,6 +1313,7 @@ const Admin = () => {
                             updated.push(editingItem.data);
                           }
                           data.saveCertifications(updated);
+                          showToast('✅ Certificate saved successfully!');
                           setEditingItem(null);
                         }}
                         className="flex items-center space-x-1.5 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold transition-colors cursor-pointer"
@@ -1593,7 +1607,7 @@ const Admin = () => {
                       <button
                         onClick={() => {
                           data.saveProfileData(profileForm);
-                          alert("Profile & About section updated successfully!");
+                          showToast('✅ Profile & About saved successfully!');
                         }}
                         className="flex items-center space-x-1.5 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold transition-colors cursor-pointer"
                       >
@@ -1743,6 +1757,28 @@ const Admin = () => {
               </div>
             </motion.div>
           </div>
+        )}
+      </AnimatePresence>
+
+      {/* Toast notification */}
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 40, scale: 0.95 }}
+            transition={{ duration: 0.25 }}
+            className={`fixed bottom-6 right-6 z-[60] flex items-center space-x-3 px-5 py-3.5 rounded-2xl shadow-xl text-sm font-semibold ${
+              toast.type === 'error'
+                ? 'bg-red-600 text-white'
+                : 'bg-emerald-600 text-white'
+            }`}
+          >
+            <span>{toast.message}</span>
+            <button onClick={() => setToast(null)} className="opacity-70 hover:opacity-100 transition-opacity">
+              <X size={14} />
+            </button>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
