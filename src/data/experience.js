@@ -49,6 +49,12 @@ export const experience = [
 
 export const certifications = [
   {
+    name: "Machine Learning with NumPy, pandas, scikit-learn, and More",
+    issuer: "Educative",
+    date: "Verified",
+    link: "/assets/certificates/cert_34JCJTSEFA.png"
+  },
+  {
     name: "Supervised Machine Learning: Regression and Classification",
     issuer: "DeepLearning.AI & Stanford University",
     date: "Verified",

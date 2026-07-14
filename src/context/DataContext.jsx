@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
-import { ADMIN_CONFIG } from '../config/admin';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 // Import initial data
 import { projects as initialProjects } from '../data/projects';
@@ -19,83 +20,189 @@ export const useData = () => {
 };
 
 export const DataProvider = ({ children }) => {
-  const { storageKeys } = ADMIN_CONFIG;
+  // State initialization with imported initial data
+  const [projects, setProjects] = useState(initialProjects);
+  const [blogPosts, setBlogPosts] = useState(initialBlogPosts);
+  const [skillCategories, setSkillCategories] = useState(initialSkillCategories);
+  const [experience, setExperience] = useState(initialExperience);
+  const [education, setEducation] = useState(initialEducation);
+  const [certifications, setCertifications] = useState(initialCertifications);
+  const [profileData, setProfileData] = useState(initialProfileData);
 
-  // Helper to load data from localStorage or fallback
-  const getStoredData = (key, fallback) => {
-    try {
-      const stored = localStorage.getItem(key);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(fallback) && !Array.isArray(parsed)) {
-          return fallback;
-        }
-        if (typeof fallback === 'object' && fallback !== null && (typeof parsed !== 'object' || parsed === null)) {
-          return fallback;
-        }
-        return parsed;
-      }
-      return fallback;
-    } catch (e) {
-      console.error(`Error loading data for key ${key}:`, e);
-      return fallback;
-    }
+  // Helper function to save the entire portfolio to Firestore without reading stale React state
+  const savePortfolio = async (updatedPortfolio) => {
+    const {
+      projects,
+      blogPosts,
+      skillCategories,
+      experience,
+      education,
+      certifications,
+      profileData
+    } = updatedPortfolio;
+
+    await setDoc(doc(db, "portfolio", "website"), {
+      projects,
+      blogPosts,
+      skillCategories,
+      experience,
+      education,
+      certifications,
+      profileData
+    });
   };
 
-  // State initialization
-  const [projects, setProjects] = useState(() => getStoredData(storageKeys.projects, initialProjects));
-  const [blogPosts, setBlogPosts] = useState(() => getStoredData(storageKeys.blog, initialBlogPosts));
-  const [skillCategories, setSkillCategories] = useState(() => getStoredData(storageKeys.skills, initialSkillCategories));
-  const [experience, setExperience] = useState(() => getStoredData(storageKeys.experience, initialExperience));
-  const [education, setEducation] = useState(() => getStoredData(storageKeys.education, initialEducation));
-  const [certifications, setCertifications] = useState(() => getStoredData(storageKeys.certifications, initialCertifications));
-  const [profileData, setProfileData] = useState(() => getStoredData(storageKeys.profile, initialProfileData));
+  // Replace current initialization with Firestore loading when DataProvider mounts
+  useEffect(() => {
+    const loadPortfolioData = async () => {
+      try {
+        const snap = await getDoc(doc(db, "portfolio", "website"));
+        if (snap.exists()) {
+          const data = snap.data();
+          if (data.projects) setProjects(data.projects);
+          if (data.blogPosts) setBlogPosts(data.blogPosts);
+          if (data.skillCategories) setSkillCategories(data.skillCategories);
+          if (data.experience) setExperience(data.experience);
+          if (data.education) setEducation(data.education);
+          if (data.certifications) setCertifications(data.certifications);
+          if (data.profileData) setProfileData(data.profileData);
+        } else {
+          // Initialize Firestore using the existing imported initial data and immediately create the document
+          await setDoc(doc(db, "portfolio", "website"), {
+            projects: initialProjects,
+            blogPosts: initialBlogPosts,
+            skillCategories: initialSkillCategories,
+            experience: initialExperience,
+            education: initialEducation,
+            certifications: initialCertifications,
+            profileData: initialProfileData
+          });
+        }
+      } catch (error) {
+        console.error("Error loading portfolio from Firestore:", error);
+      }
+    };
+    loadPortfolioData();
+  }, []);
 
-  // Save wrappers
+  // Save wrappers that build the updated portfolio object and update state + Firestore
   const saveProjects = (data) => {
+    const updatedPortfolio = {
+      projects: data,
+      blogPosts,
+      skillCategories,
+      experience,
+      education,
+      certifications,
+      profileData
+    };
     setProjects(data);
-    localStorage.setItem(storageKeys.projects, JSON.stringify(data));
+    savePortfolio(updatedPortfolio);
   };
 
   const saveProfileData = (data) => {
+    const updatedPortfolio = {
+      projects,
+      blogPosts,
+      skillCategories,
+      experience,
+      education,
+      certifications,
+      profileData: data
+    };
     setProfileData(data);
-    localStorage.setItem(storageKeys.profile, JSON.stringify(data));
+    savePortfolio(updatedPortfolio);
   };
 
   const saveBlogPosts = (data) => {
+    const updatedPortfolio = {
+      projects,
+      blogPosts: data,
+      skillCategories,
+      experience,
+      education,
+      certifications,
+      profileData
+    };
     setBlogPosts(data);
-    localStorage.setItem(storageKeys.blog, JSON.stringify(data));
+    savePortfolio(updatedPortfolio);
   };
 
   const saveSkillCategories = (data) => {
+    const updatedPortfolio = {
+      projects,
+      blogPosts,
+      skillCategories: data,
+      experience,
+      education,
+      certifications,
+      profileData
+    };
     setSkillCategories(data);
-    localStorage.setItem(storageKeys.skills, JSON.stringify(data));
+    savePortfolio(updatedPortfolio);
   };
 
   const saveExperience = (data) => {
+    const updatedPortfolio = {
+      projects,
+      blogPosts,
+      skillCategories,
+      experience: data,
+      education,
+      certifications,
+      profileData
+    };
     setExperience(data);
-    localStorage.setItem(storageKeys.experience, JSON.stringify(data));
+    savePortfolio(updatedPortfolio);
   };
 
   const saveEducation = (data) => {
+    const updatedPortfolio = {
+      projects,
+      blogPosts,
+      skillCategories,
+      experience,
+      education: data,
+      certifications,
+      profileData
+    };
     setEducation(data);
-    localStorage.setItem(storageKeys.education, JSON.stringify(data));
+    savePortfolio(updatedPortfolio);
   };
 
   const saveCertifications = (data) => {
+    const updatedPortfolio = {
+      projects,
+      blogPosts,
+      skillCategories,
+      experience,
+      education,
+      certifications: data,
+      profileData
+    };
     setCertifications(data);
-    localStorage.setItem(storageKeys.certifications, JSON.stringify(data));
+    savePortfolio(updatedPortfolio);
   };
 
-  // Reset to original static data files
+  // Reset all data to original static data files, updating Firestore
   const resetAllData = () => {
-    saveProjects(initialProjects);
-    saveBlogPosts(initialBlogPosts);
-    saveSkillCategories(initialSkillCategories);
-    saveExperience(initialExperience);
-    saveEducation(initialEducation);
-    saveCertifications(initialCertifications);
-    saveProfileData(initialProfileData);
+    const updatedPortfolio = {
+      projects: initialProjects,
+      blogPosts: initialBlogPosts,
+      skillCategories: initialSkillCategories,
+      experience: initialExperience,
+      education: initialEducation,
+      certifications: initialCertifications,
+      profileData: initialProfileData
+    };
+    setProjects(initialProjects);
+    setBlogPosts(initialBlogPosts);
+    setSkillCategories(initialSkillCategories);
+    setExperience(initialExperience);
+    setEducation(initialEducation);
+    setCertifications(initialCertifications);
+    setProfileData(initialProfileData);
+    savePortfolio(updatedPortfolio);
   };
 
   // Export functions to generate JavaScript code strings
