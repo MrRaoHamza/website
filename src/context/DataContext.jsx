@@ -41,15 +41,29 @@ export const DataProvider = ({ children }) => {
       profileData
     } = updatedPortfolio;
 
-    await setDoc(doc(db, "portfolio", "website"), {
-      projects,
-      blogPosts,
-      skillCategories,
-      experience,
-      education,
-      certifications,
-      profileData
-    });
+    try {
+      await setDoc(doc(db, "portfolio", "website"), {
+        projects,
+        blogPosts,
+        skillCategories,
+        experience,
+        education,
+        certifications,
+        profileData
+      });
+    } catch (error) {
+      console.error("Firestore save connection error details:", {
+        name: error.name,
+        code: error.code,
+        message: error.message,
+        stack: error.stack,
+        details: error.details,
+        serverResponse: error.serverResponse,
+        toString: error.toString(),
+        fullError: error
+      });
+      throw error;
+    }
   };
 
   // Replace current initialization with Firestore loading when DataProvider mounts
@@ -57,6 +71,7 @@ export const DataProvider = ({ children }) => {
     const loadPortfolioData = async () => {
       try {
         const snap = await getDoc(doc(db, "portfolio", "website"));
+        console.log("Firestore reachability test - snap.exists():", snap.exists(), snap.data());
         if (snap.exists()) {
           const data = snap.data();
           if (data.projects) setProjects(data.projects);
@@ -79,7 +94,16 @@ export const DataProvider = ({ children }) => {
           });
         }
       } catch (error) {
-        console.error("Error loading portfolio from Firestore:", error);
+        console.error("Firestore load connection error details:", {
+          name: error.name,
+          code: error.code,
+          message: error.message,
+          stack: error.stack,
+          details: error.details,
+          serverResponse: error.serverResponse,
+          toString: error.toString(),
+          fullError: error
+        });
       }
     };
     loadPortfolioData();
