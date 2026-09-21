@@ -29,17 +29,14 @@ const AboutCard = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
-          {/* Bio */}
+          {/* ── Left: Bio + Interests ── */}
           <div className="lg:col-span-7 space-y-6">
             <div className="paper-card ruled p-8 relative overflow-hidden"
               style={{ paddingLeft: '72px' }}>
-              {/* Red margin line */}
               <div style={{ position: 'absolute', left: 56, top: 0, bottom: 0, width: 1, background: 'rgba(200,98,42,0.25)' }} />
-              {/* Line numbers */}
               <div style={{ position: 'absolute', left: 10, top: 32, fontFamily: 'var(--font-hand)', fontSize: '0.72rem', color: 'var(--c-ghost)', lineHeight: '28px', userSelect: 'none' }}>
                 {Array.from({ length: 12 }, (_, i) => <div key={i}>{String(i + 1).padStart(2, '0')}</div>)}
               </div>
-
               <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', color: 'var(--c-ink)', fontWeight: 600, marginBottom: 4 }}>
                 {profileData.name}
               </h3>
@@ -54,9 +51,10 @@ const AboutCard = () => {
               ))}
             </div>
 
+            {/* Interests — auto-fill so any number tiles correctly */}
             <div>
               <p className="hand-note mb-3" style={{ fontSize: '0.9rem' }}>core interests ↓</p>
-              <div className="grid grid-cols-2 gap-3">
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(170px, 1fr))', gap: 10 }}>
                 {profileData.interests.map(interest => {
                   const c = interestColors[interest.type] || interestColors.ds;
                   return (
@@ -73,7 +71,7 @@ const AboutCard = () => {
             </div>
           </div>
 
-          {/* Right column */}
+          {/* ── Right: Mission + Education ── */}
           <div className="lg:col-span-5 space-y-5">
 
             <div className="paper-card p-7">
@@ -115,9 +113,7 @@ const AboutCard = () => {
                               fontFamily: 'var(--font-hand)', fontSize: '0.72rem', fontWeight: 700,
                               padding: '1px 7px', background: 'var(--c-rust)', color: '#fff',
                               borderRadius: 2, letterSpacing: '0.05em', textTransform: 'uppercase'
-                            }}>
-                              current
-                            </span>
+                            }}>current</span>
                           )}
                           <span className="hand-note" style={{ fontSize: '0.75rem' }}>{edu.duration}</span>
                         </div>
@@ -127,7 +123,14 @@ const AboutCard = () => {
                       </p>
                       {edu.courses?.length > 0 && (
                         <div className="flex flex-wrap gap-1.5">
-                          {edu.courses.map((c, ci) => <span key={ci} className="chip" style={{ fontSize: '0.78rem' }}>{c}</span>)}
+                          {edu.courses.slice(0, 5).map((c, ci) => (
+                            <span key={ci} className="chip" style={{ fontSize: '0.78rem' }}>{c}</span>
+                          ))}
+                          {edu.courses.length > 5 && (
+                            <span className="chip" style={{ fontSize: '0.78rem', color: 'var(--c-faint)' }}>
+                              +{edu.courses.length - 5} more
+                            </span>
+                          )}
                         </div>
                       )}
                     </div>

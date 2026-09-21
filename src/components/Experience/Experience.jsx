@@ -62,34 +62,47 @@ const Experience = () => {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
 
+          {/* ── Left: Timeline ── */}
           <div className="lg:col-span-7">
             <p className="hand-note mb-6" style={{ fontSize: '0.9rem' }}>— work &amp; projects 💼</p>
             <div className="relative">
               <div className="tl-line" />
-              {experience.map((item, i) => <ExperienceEntry key={i} item={item} index={i} />)}
+              {experience.map((item, i) => (
+                <ExperienceEntry key={i} item={item} index={i} />
+              ))}
             </div>
           </div>
 
+          {/* ── Right: Certifications — auto-fill grid ── */}
           <div className="lg:col-span-5">
             <p className="hand-note mb-6" style={{ fontSize: '0.9rem' }}>— certifications 🎓</p>
-            <div className="space-y-3">
+            {/*
+              auto-fill grid: each cert card is min 200px.
+              Currently 7 certs → 2 per row on this column width.
+              Add more certs in future → they just wrap to the next row.
+              Remove some → remaining ones fill the row naturally.
+              Nothing ever breaks or leaves gaps.
+            */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 10 }}>
               {(certifications || []).map((cert, i) => (
                 <div key={i} className="paper-card p-5">
-                  <span className="hand-note block mb-1" style={{ fontSize: '0.72rem' }}>cert #{String(i + 1).padStart(2, '0')}</span>
-                  <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '0.9rem', color: 'var(--c-ink)', fontWeight: 600, lineHeight: 1.35 }}>
+                  <span className="hand-note block mb-1" style={{ fontSize: '0.72rem' }}>
+                    cert #{String(i + 1).padStart(2, '0')}
+                  </span>
+                  <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '0.88rem', color: 'var(--c-ink)', fontWeight: 600, lineHeight: 1.35 }}>
                     {cert.name}
                   </h4>
-                  <p style={{ fontFamily: 'var(--font-hand)', fontSize: '0.88rem', color: 'var(--c-faint)', marginTop: 3 }}>
+                  <p style={{ fontFamily: 'var(--font-hand)', fontSize: '0.85rem', color: 'var(--c-faint)', marginTop: 4 }}>
                     {cert.issuer}
                   </p>
                   <div className="flex items-center justify-between mt-3 pt-3"
                     style={{ borderTop: '1px dashed var(--c-border)' }}>
-                    <span className="hand-note" style={{ fontSize: '0.78rem' }}>{cert.date}</span>
+                    <span className="hand-note" style={{ fontSize: '0.75rem' }}>{cert.date}</span>
                     <a href={cert.link} target="_blank" rel="noopener noreferrer"
                       className="flex items-center gap-1 transition-colors"
-                      style={{ fontFamily: 'var(--font-hand)', fontSize: '0.85rem', color: 'var(--c-rust)' }}
+                      style={{ fontFamily: 'var(--font-hand)', fontSize: '0.82rem', color: 'var(--c-rust)' }}
                       onMouseEnter={e => e.currentTarget.style.color = 'var(--c-rust-lt)'}
                       onMouseLeave={e => e.currentTarget.style.color = 'var(--c-rust)'}>
                       Verify <ExternalLink size={10} />
@@ -99,6 +112,7 @@ const Experience = () => {
               ))}
             </div>
           </div>
+
         </div>
       </div>
     </section>
