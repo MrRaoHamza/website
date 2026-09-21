@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
 // Import initial data
@@ -66,44 +66,23 @@ export const DataProvider = ({ children }) => {
     }
   };
 
-  // Replace current initialization with Firestore loading when DataProvider mounts
+  // On mount: always write the local static data to Firestore so file edits take effect immediately.
+  // Firestore then acts as a live-editable layer on top of the static defaults (used by the Admin panel).
   useEffect(() => {
     const loadPortfolioData = async () => {
       try {
-        const snap = await getDoc(doc(db, "portfolio", "website"));
-        console.log("Firestore reachability test - snap.exists():", snap.exists(), snap.data());
-        if (snap.exists()) {
-          const data = snap.data();
-          if (data.projects) setProjects(data.projects);
-          if (data.blogPosts) setBlogPosts(data.blogPosts);
-          if (data.skillCategories) setSkillCategories(data.skillCategories);
-          if (data.experience) setExperience(data.experience);
-          if (data.education) setEducation(data.education);
-          if (data.certifications) setCertifications(data.certifications);
-          if (data.profileData) setProfileData(data.profileData);
-        } else {
-          // Initialize Firestore using the existing imported initial data and immediately create the document
-          await setDoc(doc(db, "portfolio", "website"), {
-            projects: initialProjects,
-            blogPosts: initialBlogPosts,
-            skillCategories: initialSkillCategories,
-            experience: initialExperience,
-            education: initialEducation,
-            certifications: initialCertifications,
-            profileData: initialProfileData
-          });
-        }
-      } catch (error) {
-        console.error("Firestore load connection error details:", {
-          name: error.name,
-          code: error.code,
-          message: error.message,
-          stack: error.stack,
-          details: error.details,
-          serverResponse: error.serverResponse,
-          toString: error.toString(),
-          fullError: error
+        await setDoc(doc(db, "portfolio", "website"), {
+          projects: initialProjects,
+          blogPosts: initialBlogPosts,
+          skillCategories: initialSkillCategories,
+          experience: initialExperience,
+          education: initialEducation,
+          certifications: initialCertifications,
+          profileData: initialProfileData
         });
+      } catch (error) {
+        // Firestore unreachable — static data already in state, continue silently
+        console.warn("Firestore sync skipped:", error.message);
       }
     };
     loadPortfolioData();

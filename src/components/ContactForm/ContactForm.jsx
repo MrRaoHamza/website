@@ -1,222 +1,148 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Send, CheckCircle, AlertCircle, Sparkles } from 'lucide-react';
+import { Send, CheckCircle, AlertCircle, Mail, MapPin, Clock } from 'lucide-react';
 
 const ContactForm = () => {
-  const [status, setStatus] = useState('idle'); // idle | loading | success | error
+  const [status, setStatus] = useState('idle');
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
-  const onSubmit = async (data) => {
-    // Honeypot spam check
-    if (data.website_url) {
-      // Silently discard spam submission and show success to trick the bot
-      setStatus('loading');
-      setTimeout(() => setStatus('success'), 1000);
-      return;
-    }
-
+  const onSubmit = (data) => {
+    if (data.website_url) { setStatus('loading'); setTimeout(() => setStatus('success'), 800); return; }
     setStatus('loading');
-
-    // Simulate sending email api
-    setTimeout(() => {
-      setStatus('success');
-      reset();
-      // Reset back to idle after 5 seconds
-      setTimeout(() => setStatus('idle'), 5000);
-    }, 1500);
+    setTimeout(() => { setStatus('success'); reset(); setTimeout(() => setStatus('idle'), 5000); }, 1500);
   };
 
   return (
-    <section id="contact" className="py-24 relative overflow-hidden">
-      {/* Ambient background glows */}
-      <div className="absolute bottom-0 left-10 w-[300px] h-[300px] bg-blue-500/5 rounded-full blur-[80px] pointer-events-none" />
+    <section id="contact" className="nb-section nb-section-tinted"
+      style={{ borderTop: '1px solid var(--c-border)' }}>
+      <div className="max-w-6xl mx-auto px-5 sm:px-8">
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full">
-            Get in touch
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-bold font-display text-slate-900 dark:text-white mt-4">
-            Let's build something intelligent
+        <div className="flex items-baseline gap-4 mb-12">
+          <span className="section-num">06 —</span>
+          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.8rem,4vw,2.8rem)', color: 'var(--c-ink)', fontWeight: 600 }}>
+            Get in Touch
           </h2>
-          <p className="mt-4 text-slate-500 dark:text-text-secondary-dark text-sm leading-relaxed">
-            Have an open opportunity, a dataset that needs analyzing, or just want to talk about machine learning? Drop a message!
-          </p>
+          <span className="hand-note hidden sm:inline-block" style={{ transform: 'rotate(-1deg)' }}>let's talk! ✉️</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+
           {/* Info cards */}
-          <div className="md:col-span-1 space-y-4">
-            <div className="p-6 rounded-2xl bg-white dark:bg-dark-card border border-slate-200/60 dark:border-dark-border/60 shadow-sm flex flex-col">
-              <span className="text-xs font-semibold text-slate-400 dark:text-text-muted-dark uppercase tracking-wider">Email Direct</span>
-              <a href="mailto:mr.raohamza@gmail.com" className="text-sm font-semibold text-slate-800 dark:text-white hover:text-blue-500 dark:hover:text-blue-400 transition-colors mt-2 break-all">
-                mr.raohamza@gmail.com
-              </a>
-            </div>
-            <div className="p-6 rounded-2xl bg-white dark:bg-dark-card border border-slate-200/60 dark:border-dark-border/60 shadow-sm flex flex-col">
-              <span className="text-xs font-semibold text-slate-400 dark:text-text-muted-dark uppercase tracking-wider">Location</span>
-              <span className="text-sm font-semibold text-slate-800 dark:text-white mt-2">
-                Pakistan (Open to Remote / Relocation)
-              </span>
-            </div>
-            <div className="p-6 rounded-2xl bg-white dark:bg-dark-card border border-slate-200/60 dark:border-dark-border/60 shadow-sm flex flex-col">
-              <span className="text-xs font-semibold text-slate-400 dark:text-text-muted-dark uppercase tracking-wider">Response Time</span>
-              <span className="text-sm font-semibold text-slate-800 dark:text-white mt-2 flex items-center">
-                <span className="w-2 h-2 bg-emerald-500 rounded-full mr-2" />
-                Within 24 Hours
-              </span>
+          <div className="space-y-4">
+            {[
+              { icon: <Mail size={15} />,   label: 'Email',    value: 'mr.raohamza@gmail.com', href: 'mailto:mr.raohamza@gmail.com' },
+              { icon: <MapPin size={15} />, label: 'Location', value: 'Pakistan — open to remote' },
+              { icon: <Clock size={15} />,  label: 'Response', value: 'Within 24 hours', dot: true },
+            ].map(card => (
+              <div key={card.label} className="paper-card p-5">
+                <div className="flex items-center gap-2 mb-2" style={{ color: 'var(--c-faint)' }}>
+                  {card.icon}
+                  <span className="hand-note" style={{ fontSize: '0.8rem' }}>{card.label}</span>
+                </div>
+                {card.href ? (
+                  <a href={card.href}
+                    style={{ fontFamily: 'var(--font-sans)', fontSize: '0.85rem', color: 'var(--c-ink)', fontWeight: 500, transition: 'color 0.15s' }}
+                    onMouseEnter={e => e.currentTarget.style.color = 'var(--c-rust)'}
+                    onMouseLeave={e => e.currentTarget.style.color = 'var(--c-ink)'}>
+                    {card.value}
+                  </a>
+                ) : (
+                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.85rem', color: 'var(--c-ink)', fontWeight: 500, display: 'flex', alignItems: 'center', gap: 6 }}>
+                    {card.dot && <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#16a34a', flexShrink: 0, display: 'inline-block' }} />}
+                    {card.value}
+                  </p>
+                )}
+              </div>
+            ))}
+
+            {/* Sticky note */}
+            <div style={{ transform: 'rotate(1deg)', background: '#fef3c7', border: '1px solid #fde68a', padding: '12px 14px', boxShadow: '2px 3px 8px rgba(0,0,0,0.1)', borderRadius: 2 }}>
+              <p style={{ fontFamily: 'var(--font-hand)', fontSize: '0.9rem', color: '#92400e', lineHeight: 1.5 }}>
+                "happy to discuss any AI/ML project or opportunity. don't be shy!" — Rao ✍️
+              </p>
             </div>
           </div>
 
-          {/* Form */}
-          <div className="md:col-span-2 p-8 rounded-2xl bg-white dark:bg-dark-card border border-slate-200/60 dark:border-dark-border/60 shadow-md glow-card">
-            {status === 'success' ? (
-              <div className="py-12 text-center flex flex-col items-center">
-                <div className="p-3 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-500 dark:text-emerald-400 rounded-full mb-4 animate-bounce">
-                  <CheckCircle size={40} />
-                </div>
-                <h3 className="text-xl font-bold font-display text-slate-900 dark:text-white">Message Transmitted!</h3>
-                <p className="mt-2 text-sm text-slate-500 dark:text-text-secondary-dark max-w-sm">
-                  Thank you for reaching out. Rao's mailbox has queued your inquiry, and he will reply shortly.
-                </p>
-                <button
-                  onClick={() => setStatus('idle')}
-                  className="mt-6 px-5 py-2 text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-dark-surface dark:hover:bg-dark-bg text-slate-700 dark:text-white rounded-lg transition-colors cursor-pointer"
-                >
-                  Send another message
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-                {/* Honeypot Spam Protection Field */}
-                <input
-                  type="text"
-                  name="website_url"
-                  className="hidden"
-                  tabIndex="-1"
-                  autoComplete="off"
-                  {...register('website_url')}
-                />
+          {/* Notepad form */}
+          <div className="md:col-span-2 paper-card overflow-hidden">
+            {/* Rust header strip */}
+            <div style={{ background: 'var(--c-rust)', padding: '10px 24px', display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ fontFamily: 'var(--font-hand)', fontSize: '1.1rem', color: '#fff', fontWeight: 700 }}>✍️ Send a Message</span>
+            </div>
+            {/* Spiral holes */}
+            <div style={{ background: 'var(--c-bg-aged)', padding: '8px 24px', display: 'flex', gap: 20, borderBottom: '1px solid var(--c-border)' }}>
+              {[...Array(8)].map((_, i) => (
+                <div key={i} style={{ width: 12, height: 12, borderRadius: '50%', border: '2px solid var(--c-border)', background: 'var(--c-bg)' }} />
+              ))}
+            </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="name" className="block text-xs font-semibold text-slate-500 dark:text-text-secondary-dark mb-1.5">
-                      Name
-                    </label>
-                    <input
-                      id="name"
-                      type="text"
-                      placeholder="Alan Turing"
-                      {...register('name', { required: 'Name is required' })}
-                      className={`w-full bg-slate-50 dark:bg-dark-bg/60 border rounded-xl px-4 py-2.5 text-sm focus:outline-none transition-colors ${
-                        errors.name ? 'border-red-500 focus:border-red-500' : 'border-slate-200 dark:border-dark-border focus:border-blue-500'
-                      }`}
-                    />
-                    {errors.name && (
-                      <span className="text-[10px] text-red-500 flex items-center mt-1">
-                        <AlertCircle size={10} className="mr-1" />
-                        {errors.name.message}
-                      </span>
-                    )}
+            <div className="p-8 ruled" style={{ minHeight: 400 }}>
+              {status === 'success' ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <div style={{ color: '#16a34a', marginBottom: 16 }}>
+                    <CheckCircle size={44} strokeWidth={1.5} />
+                  </div>
+                  <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', color: 'var(--c-ink)', fontWeight: 600, marginBottom: 8 }}>
+                    Message received! ✉️
+                  </h3>
+                  <p className="hand-note" style={{ fontSize: '1rem' }}>I'll get back to you within 24 hours.</p>
+                  <button onClick={() => setStatus('idle')} className="btn-outline mt-6 text-sm">Send another</button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-7" noValidate>
+                  <input type="text" className="hidden" tabIndex="-1" autoComplete="off" {...register('website_url')} />
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <NbField label="Your name" error={errors.name}>
+                      <input id="name" type="text" placeholder="Alan Turing"
+                        {...register('name', { required: 'Name is required' })} className="nb-input" />
+                    </NbField>
+                    <NbField label="Email address" error={errors.email}>
+                      <input id="email" type="email" placeholder="alan@turing.org"
+                        {...register('email', { required: 'Email is required', pattern: { value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, message: 'Invalid email' } })}
+                        className="nb-input" />
+                    </NbField>
                   </div>
 
-                  <div>
-                    <label htmlFor="email" className="block text-xs font-semibold text-slate-500 dark:text-text-secondary-dark mb-1.5">
-                      Email Address
-                    </label>
-                    <input
-                      id="email"
-                      type="email"
-                      placeholder="alan@turing.org"
-                      {...register('email', { 
-                        required: 'Email is required',
-                        pattern: {
-                          value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                          message: 'Invalid email address'
-                        }
-                      })}
-                      className={`w-full bg-slate-50 dark:bg-dark-bg/60 border rounded-xl px-4 py-2.5 text-sm focus:outline-none transition-colors ${
-                        errors.email ? 'border-red-500 focus:border-red-500' : 'border-slate-200 dark:border-dark-border focus:border-blue-500'
-                      }`}
-                    />
-                    {errors.email && (
-                      <span className="text-[10px] text-red-500 flex items-center mt-1">
-                        <AlertCircle size={10} className="mr-1" />
-                        {errors.email.message}
-                      </span>
-                    )}
-                  </div>
-                </div>
+                  <NbField label="Subject" error={errors.subject}>
+                    <input id="subject" type="text" placeholder="ML opportunity / collaboration"
+                      {...register('subject', { required: 'Subject is required' })} className="nb-input" />
+                  </NbField>
 
-                <div>
-                  <label htmlFor="subject" className="block text-xs font-semibold text-slate-500 dark:text-text-secondary-dark mb-1.5">
-                    Subject
-                  </label>
-                  <input
-                    id="subject"
-                    type="text"
-                    placeholder="Machine Learning Opportunities"
-                    {...register('subject', { required: 'Subject is required' })}
-                    className={`w-full bg-slate-50 dark:bg-dark-bg/60 border rounded-xl px-4 py-2.5 text-sm focus:outline-none transition-colors ${
-                      errors.subject ? 'border-red-500 focus:border-red-500' : 'border-slate-200 dark:border-dark-border focus:border-blue-500'
-                    }`}
-                  />
-                  {errors.subject && (
-                    <span className="text-[10px] text-red-500 flex items-center mt-1">
-                      <AlertCircle size={10} className="mr-1" />
-                      {errors.subject.message}
-                    </span>
-                  )}
-                </div>
+                  <NbField label="Message" error={errors.message}>
+                    <textarea id="message" rows="4" placeholder="Tell me about your project..."
+                      {...register('message', { required: 'Message is required', minLength: { value: 10, message: 'At least 10 characters' } })}
+                      className="nb-input resize-none" style={{ paddingTop: '0.5rem' }} />
+                  </NbField>
 
-                <div>
-                  <label htmlFor="message" className="block text-xs font-semibold text-slate-500 dark:text-text-secondary-dark mb-1.5">
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    rows="4"
-                    placeholder="Describe your project, team, or opportunity..."
-                    {...register('message', { 
-                      required: 'Message is required',
-                      minLength: { value: 10, message: 'Message must be at least 10 characters long' }
-                    })}
-                    className={`w-full bg-slate-50 dark:bg-dark-bg/60 border rounded-xl px-4 py-2.5 text-sm focus:outline-none transition-colors resize-none ${
-                      errors.message ? 'border-red-500 focus:border-red-500' : 'border-slate-200 dark:border-dark-border focus:border-blue-500'
-                    }`}
-                  />
-                  {errors.message && (
-                    <span className="text-[10px] text-red-500 flex items-center mt-1">
-                      <AlertCircle size={10} className="mr-1" />
-                      {errors.message.message}
-                    </span>
-                  )}
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={status === 'loading'}
-                  className="w-full flex items-center justify-center space-x-2 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-md shadow-blue-500/10 hover:shadow-blue-500/25 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-75 disabled:scale-100 disabled:pointer-events-none transition-all cursor-pointer"
-                >
-                  {status === 'loading' ? (
-                    <>
-                      <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      <span>Optimizing Weights...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Send size={15} />
-                      <span>Transmit Message</span>
-                    </>
-                  )}
-                </button>
-              </form>
-            )}
+                  <button type="submit" disabled={status === 'loading'}
+                    className="btn-ink w-full justify-center disabled:opacity-60 disabled:pointer-events-none">
+                    {status === 'loading'
+                      ? <><span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Sending…</>
+                      : <><Send size={13} /> Send Message</>}
+                  </button>
+                </form>
+              )}
+            </div>
           </div>
         </div>
       </div>
     </section>
   );
 };
+
+const NbField = ({ label, error, children }) => (
+  <div>
+    <label style={{ fontFamily: 'var(--font-hand)', fontSize: '1rem', color: 'var(--c-rust)', display: 'block', marginBottom: 4, fontWeight: 600 }}>
+      {label}
+    </label>
+    {children}
+    {error && (
+      <span className="flex items-center gap-1 mt-1" style={{ fontFamily: 'var(--font-hand)', fontSize: '0.82rem', color: '#ef4444' }}>
+        <AlertCircle size={10} /> {error.message}
+      </span>
+    )}
+  </div>
+);
 
 export default ContactForm;

@@ -81,15 +81,27 @@ const ProjectDetails = () => {
               <GithubIcon size={14} />
               <span>Repository</span>
             </a>
-            <a
-              href={project.demoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center space-x-1.5 px-4 py-2.5 text-xs font-semibold rounded-lg bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/10 transition-all"
-            >
-              <ExternalLink size={14} />
-              <span>Live System</span>
-            </a>
+            {project.demoUrl && (
+              project.demoUrl.startsWith('/') ? (
+                <Link
+                  to={project.demoUrl}
+                  className="flex items-center justify-center space-x-1.5 px-4 py-2.5 text-xs font-semibold rounded-lg bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/10 transition-all"
+                >
+                  <ExternalLink size={14} />
+                  <span>Launch Live System</span>
+                </Link>
+              ) : (
+                <a
+                  href={project.demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center space-x-1.5 px-4 py-2.5 text-xs font-semibold rounded-lg bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/10 transition-all"
+                >
+                  <ExternalLink size={14} />
+                  <span>Live System</span>
+                </a>
+              )
+            )}
           </div>
         </div>
 
@@ -105,6 +117,38 @@ const ProjectDetails = () => {
             }}
           />
         </div>
+
+        {/* Live Interactive App Callout */}
+        {project.demoUrl && project.demoUrl.startsWith('/') && (
+          <div className="mt-8 bg-gradient-to-r from-blue-600/10 via-indigo-500/10 to-purple-600/10 border border-blue-500/30 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center text-white shrink-0 shadow-md shadow-blue-500/20">
+                <Cpu size={24} />
+              </div>
+              <div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
+                    Live System Ready
+                  </span>
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mt-0.5">
+                  Explore the Live Interactive Simulator
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-text-secondary-dark mt-1">
+                  Test real-time student outcomes, examine SHAP feature attributions, and run prescriptive intervention simulations.
+                </p>
+              </div>
+            </div>
+            <Link
+              to={project.demoUrl}
+              className="shrink-0 inline-flex items-center space-x-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-lg shadow-blue-500/25 transition-all transform hover:-translate-y-0.5"
+            >
+              <ExternalLink size={15} />
+              <span>Launch Live App</span>
+            </Link>
+          </div>
+        )}
 
         {/* Case Study Deep Dive */}
         <div className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-12">

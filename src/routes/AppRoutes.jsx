@@ -6,6 +6,8 @@ import Blog from '../pages/Blog/Blog';
 import Admin from '../pages/Admin/Admin';
 import NotFound from '../pages/NotFound/NotFound';
 
+import StudentPerformanceLive from '../pages/Demos/StudentPerformanceLive';
+
 // Scroll to top on route change helper
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -22,6 +24,7 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/projects/:slug" element={<ProjectDetails />} />
+        <Route path="/demo/student-performance-prediction" element={<StudentPerformanceLive />} />
         <Route path="/blog/:slug" element={<Blog />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="*" element={<NotFound />} />

@@ -1,9 +1,16 @@
 export const education = [
   {
-    institution: "BS Computer Science",
+    institution: "Air University — MS Artificial Intelligence",
+    degree: "Master of Science in Artificial Intelligence",
+    duration: "Sep 2026 – 2028 (In Progress)",
+    description: "Currently pursuing an MS in Artificial Intelligence at Air University. Deepening expertise in advanced ML, deep learning architectures, NLP, and AI systems engineering.",
+    courses: ["Advanced Machine Learning", "Deep Learning", "Natural Language Processing", "Computer Vision", "AI Ethics & Governance", "Research Methodology"]
+  },
+  {
+    institution: "Air University — BS Computer Science",
     degree: "Bachelor of Science in Computer Science",
     duration: "2022 – 2026",
-    description: "Focus on algorithms, software engineering, databases, and specializations in artificial intelligence and machine learning. GPA: 3.8/4.0",
+    description: "Graduated with a focus on algorithms, software engineering, databases, and specializations in artificial intelligence and machine learning.",
     courses: ["Design and Analysis of Algorithms", "Database Management Systems", "Artificial Intelligence", "Machine Learning", "Data Structures", "Probability & Statistics"]
   },
   {

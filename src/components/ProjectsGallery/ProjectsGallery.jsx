@@ -1,102 +1,74 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useData } from '../../context/DataContext';
 import ProjectCard from '../ProjectCard/ProjectCard';
 
+const FILTERS = ['All', 'Data Science', 'Machine Learning', 'Deep Learning', 'Python', 'Web Apps'];
+
 const ProjectsGallery = () => {
   const { projects } = useData();
-  const [activeFilter, setActiveFilter] = useState('All');
+  const [active, setActive] = useState('All');
 
-  const filters = [
-    'All',
-    'Data Science',
-    'Machine Learning',
-    'Deep Learning',
-    'Python',
-    'Web Apps'
-  ];
-
-  const filteredProjects = projects.filter((project) => {
-    if (activeFilter === 'All') return true;
-    if (activeFilter === 'Python') return project.tech.includes('Python');
-    if (activeFilter === 'Web Apps') {
-      return (
-        project.tech.includes('Web Apps') || 
-        project.demoUrl !== ''
-      );
-    }
-    return project.category === activeFilter;
+  const filtered = projects.filter(p => {
+    if (active === 'All')     return true;
+    if (active === 'Python')   return p.tech.includes('Python');
+    if (active === 'Web Apps') return p.tech.includes('Web Apps') || p.demoUrl !== '';
+    return p.category === active;
   });
 
   return (
-    <section id="projects" className="py-24 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full">
-            My Portfolio
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-bold font-display text-slate-900 dark:text-white mt-4">
-            Technical Project Showcase
+    <section id="projects" className="nb-section nb-section-tinted"
+      style={{ borderTop: '1px solid var(--c-border)' }}>
+      <div className="max-w-6xl mx-auto px-5 sm:px-8">
+
+        <div className="flex items-baseline gap-4 mb-10">
+          <span className="section-num">04 —</span>
+          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.8rem,4vw,2.8rem)', color: 'var(--c-ink)', fontWeight: 600 }}>
+            Project Showcase
           </h2>
-          <p className="mt-4 text-slate-500 dark:text-text-secondary-dark text-sm leading-relaxed">
-            Explore predictive models, statistical analysis reports, and deep learning architectures.
-          </p>
+          <span className="hand-note hidden sm:inline-block" style={{ transform: 'rotate(-1.5deg)' }}>
+            built from scratch 🔧
+          </span>
         </div>
 
-        {/* Filter Navigation */}
-        <div className="flex flex-wrap justify-center items-center gap-2 mb-12 relative z-10">
-          {filters.map((filter) => (
-            <button
-              key={filter}
-              onClick={() => setActiveFilter(filter)}
-              className="relative px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-colors duration-300 overflow-hidden border border-slate-200 dark:border-dark-border"
+        {/* Filter tabs */}
+        <div className="flex flex-wrap gap-2 mb-10">
+          {FILTERS.map(f => (
+            <button key={f} onClick={() => setActive(f)}
               style={{
-                borderColor: activeFilter === filter ? 'transparent' : undefined
-              }}
-            >
-              {activeFilter === filter && (
-                <motion.div
-                  layoutId="activeFilterBg"
-                  className="absolute inset-0 bg-blue-600 rounded-xl -z-10 shadow-md shadow-blue-500/15"
-                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                />
-              )}
-              <span className={activeFilter === filter ? 'text-white' : 'text-slate-600 dark:text-text-secondary-dark hover:text-slate-800 dark:hover:text-white'}>
-                {filter}
-              </span>
+                fontFamily: 'var(--font-hand)',
+                fontSize: '0.95rem',
+                fontWeight: active === f ? 700 : 500,
+                padding: '3px 14px 4px',
+                borderRadius: '2px 2px 0 0',
+                border: `1px solid ${active === f ? 'var(--c-rust)' : 'var(--c-border)'}`,
+                borderBottom: active === f ? '2px solid var(--c-rust)' : `1px solid var(--c-border)`,
+                background: active === f ? 'var(--c-rust-bg)' : 'var(--c-card)',
+                color: active === f ? 'var(--c-rust)' : 'var(--c-faint)',
+                cursor: 'pointer',
+                transition: 'all 0.15s',
+              }}>
+              {f}
             </button>
           ))}
         </div>
 
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filtered.map((project, i) => (
+            <ProjectCard key={project.id} project={project} index={i} />
+          ))}
+        </div>
 
-        {/* Projects Grid with Framer Motion AnimatePresence */}
-        <motion.div 
-          layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => (
-              <motion.div
-                key={project.id}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-              >
-                <ProjectCard project={project} />
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
-
-        {filteredProjects.length === 0 && (
+        {filtered.length === 0 && (
           <div className="text-center py-16">
-            <p className="text-sm text-slate-500 dark:text-text-secondary-dark">No projects match the selected filter.</p>
+            <span className="hand-note" style={{ fontSize: '1.1rem' }}>nothing here yet — try another filter ☕</span>
           </div>
         )}
+
+        <div className="mt-12 flex items-center gap-3">
+          <div style={{ flex: 1, height: 1, background: 'var(--c-border)' }} />
+          <span className="hand-note" style={{ fontSize: '0.82rem' }}>more projects on GitHub →</span>
+          <div style={{ flex: 1, height: 1, background: 'var(--c-border)' }} />
+        </div>
       </div>
     </section>
   );

@@ -8,7 +8,7 @@ export const projects = [
     tech: ["Python", "Pandas", "Scikit-learn", "Matplotlib", "Seaborn"],
     image: "/assets/projects/student_performance.png",
     githubUrl: "https://github.com/raohamza/student-performance-prediction",
-    demoUrl: "https://student-performance-predict.vercel.app",
+    demoUrl: "/demo/student-performance-prediction",
     caseStudy: {
       overview: "Academic success is crucial, and early detection of students at risk of underperforming allows for timely intervention. This project builds an end-to-end Machine Learning pipeline to analyze historical academic data, demographic factors, and behavioral patterns to predict final outcomes.",
       problemStatement: "Educational institutions often lack automated systems to proactively identify students who are likely to fail or require academic support. Traditional methods rely on mid-term grades, which are often too late for effective remedial intervention.",
