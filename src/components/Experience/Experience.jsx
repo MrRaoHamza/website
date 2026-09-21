@@ -78,14 +78,7 @@ const Experience = () => {
           {/* ── Right: Certifications — auto-fill grid ── */}
           <div className="lg:col-span-5">
             <p className="hand-note mb-6" style={{ fontSize: '0.9rem' }}>— certifications 🎓</p>
-            {/*
-              auto-fill grid: each cert card is min 200px.
-              Currently 7 certs → 2 per row on this column width.
-              Add more certs in future → they just wrap to the next row.
-              Remove some → remaining ones fill the row naturally.
-              Nothing ever breaks or leaves gaps.
-            */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 10 }}>
+            <div className="space-y-3">
               {(certifications || []).map((cert, i) => (
                 <div key={i} className="paper-card p-5">
                   <span className="hand-note block mb-1" style={{ fontSize: '0.72rem' }}>
