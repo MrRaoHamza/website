@@ -2,13 +2,6 @@ import React from 'react';
 import { Target, BookOpen } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 
-const interestColors = {
-  ds:    { bg: '#eef2ff', border: '#c7d2fe', text: '#3730a3' },
-  ml:    { bg: '#f0fdf4', border: '#bbf7d0', text: '#15803d' },
-  dl:    { bg: '#faf5ff', border: '#e9d5ff', text: '#7e22ce' },
-  genai: { bg: '#fff7ed', border: '#fed7aa', text: '#9a3412' },
-};
-
 const AboutCard = () => {
   const { education, profileData } = useData();
 
@@ -51,22 +44,19 @@ const AboutCard = () => {
               ))}
             </div>
 
-            {/* Interests — auto-fill so any number tiles correctly */}
+            {/* Interests — plain ink chips, no colored backgrounds */}
             <div>
               <p className="hand-note mb-3" style={{ fontSize: '0.9rem' }}>core interests ↓</p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(170px, 1fr))', gap: 10 }}>
-                {profileData.interests.map(interest => {
-                  const c = interestColors[interest.type] || interestColors.ds;
-                  return (
-                    <div key={interest.name}
-                      style={{ background: c.bg, border: `1px solid ${c.border}`, borderRadius: 3, padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <span style={{ width: 6, height: 6, borderRadius: '50%', background: c.text, flexShrink: 0 }} />
-                      <span style={{ fontFamily: 'var(--font-hand)', fontSize: '1rem', color: c.text, fontWeight: 600 }}>
-                        {interest.name}
-                      </span>
-                    </div>
-                  );
-                })}
+                {profileData.interests.map(interest => (
+                  <div key={interest.name}
+                    style={{ border: '1px solid var(--c-border)', borderRadius: 3, padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 8, background: 'var(--c-card)' }}>
+                    <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--c-rust)', flexShrink: 0 }} />
+                    <span style={{ fontFamily: 'var(--font-hand)', fontSize: '1rem', color: 'var(--c-mid)', fontWeight: 600 }}>
+                      {interest.name}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

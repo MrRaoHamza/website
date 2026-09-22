@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquare, X, Send, Bot, Sparkles, Terminal } from 'lucide-react';
+import { MessageSquare, X, Send, Bot } from 'lucide-react';
 
 const AiChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -56,7 +55,7 @@ const AiChatbot = () => {
       } else if (query.includes('contact') || query.includes('email') || query.includes('hire') || query.includes('reach')) {
         botResponseText = "You can contact Rao via email at mr.raohamza@gmail.com, or submit the Contact Form at the bottom of the page. You can also connect via LinkedIn in the footer!";
       } else if (query.includes('study') || query.includes('education') || query.includes('degree') || query.includes('university') || query.includes('gpa')) {
-        botResponseText = "Rao is completing his BS in Computer Science (2022 - 2026) with a strong GPA of 3.8/4.0. His coursework highlights include Machine Learning, Artificial Intelligence, and Advanced Algorithms.";
+        botResponseText = "Rao completed his BS in Computer Science from Air University (2022–2026) and is now pursuing an MS in Artificial Intelligence at Air University (2026–2028). His focus areas are Machine Learning, Deep Learning, and AI Systems.";
       } else if (query.includes('resume') || query.includes('cv') || query.includes('download')) {
         botResponseText = "Rao's resume can be downloaded by clicking the 'Resume' button at the top-right of the header. He is open to remote or local AI/ML Engineer and Data Scientist positions!";
       } else {
@@ -76,138 +75,152 @@ const AiChatbot = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 font-sans">
-      {/* Floating Toggle Button */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0, y: 50 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ type: 'spring', stiffness: 100, damping: 15, delay: 1.5 }}
+    <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 50, fontFamily: 'var(--font-sans)' }}>
+
+      {/* ── Toggle button — notebook ink style ── */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label="Toggle Assistant"
+        style={{
+          width: 46, height: 46,
+          borderRadius: '50%',
+          background: 'var(--c-ink)',
+          color: 'var(--c-bg)',
+          border: '2px solid var(--c-ink)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          cursor: 'pointer',
+          boxShadow: '3px 3px 0 var(--c-rust)',
+          transition: 'transform 0.15s, box-shadow 0.15s',
+          flexShrink: 0,
+        }}
+        onMouseEnter={e => { e.currentTarget.style.transform = 'translate(-1px,-1px)'; e.currentTarget.style.boxShadow = '4px 4px 0 var(--c-rust)'; }}
+        onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '3px 3px 0 var(--c-rust)'; }}
       >
-        <motion.button
-          animate={{ y: [0, -8, 0] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setIsOpen(!isOpen)}
-          className="p-4 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-xl shadow-blue-500/20 hover:shadow-blue-500/35 flex items-center justify-center relative group cursor-pointer"
-          aria-label="Toggle AI Assistant"
-        >
-          <motion.div 
-            animate={{ scale: [1, 1.4, 1], opacity: [0.5, 0, 0.5] }}
-            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute inset-0 rounded-full border-2 border-blue-500 pointer-events-none"
-          />
-          <MessageSquare size={24} className="relative z-10" />
-        </motion.button>
-      </motion.div>
+        {isOpen
+          ? <X size={18} />
+          : <MessageSquare size={18} />
+        }
+      </button>
 
 
-      {/* Chat Window */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 100, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 100, scale: 0.9 }}
-            transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="absolute bottom-20 right-0 w-[350px] sm:w-[400px] h-[500px] rounded-2xl glass shadow-2xl overflow-hidden flex flex-col border border-slate-200 dark:border-dark-border"
-          >
-            {/* Header */}
-            <div className="p-4 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-600/90 dark:to-indigo-600/90 text-white flex items-center justify-between shadow-md">
-              <div className="flex items-center space-x-3">
-                <div className="p-1.5 bg-white/10 rounded-lg flex items-center justify-center">
-                  <Bot size={20} className="text-blue-100" />
-                </div>
-                <div>
-                  <h4 className="font-display font-semibold text-sm flex items-center">
-                    Rao's Assistant
-                    <Sparkles size={12} className="ml-1 text-yellow-300 fill-yellow-300" />
-                  </h4>
-                  <span className="text-[10px] text-blue-200 flex items-center">
-                    <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full mr-1 animate-pulse" />
-                    Agent Online
-                  </span>
+      {/* ── Chat window ── */}
+      {isOpen && (
+        <div style={{
+          position: 'absolute', bottom: 58, right: 0,
+          width: 'min(380px, calc(100vw - 32px))',
+          height: 480,
+          display: 'flex', flexDirection: 'column',
+          borderRadius: 4,
+          border: '1px solid var(--c-border)',
+          background: 'var(--c-card)',
+          boxShadow: '4px 4px 0 var(--c-rust), 0 8px 32px rgba(0,0,0,0.15)',
+          overflow: 'hidden',
+        }}>
+
+          {/* Header strip */}
+          <div style={{
+            background: 'var(--c-rust)', padding: '10px 16px',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            flexShrink: 0,
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <Bot size={16} style={{ color: '#fff' }} />
+              <div>
+                <p style={{ fontFamily: 'var(--font-hand)', fontSize: '1rem', color: '#fff', fontWeight: 700, lineHeight: 1 }}>
+                  Rao's Assistant
+                </p>
+                <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontFamily: 'var(--font-hand)', fontSize: '0.75rem', color: 'rgba(255,255,255,0.8)' }}>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', flexShrink: 0, display: 'inline-block' }} />
+                  online
+                </span>
+              </div>
+            </div>
+            <button onClick={() => setIsOpen(false)}
+              style={{ color: 'rgba(255,255,255,0.8)', background: 'none', border: 'none', cursor: 'pointer' }}>
+              <X size={16} />
+            </button>
+          </div>
+
+          {/* Spiral holes decoration */}
+          <div style={{ background: 'var(--c-bg-aged)', padding: '5px 16px', display: 'flex', gap: 14, borderBottom: '1px solid var(--c-border)', flexShrink: 0 }}>
+            {[...Array(6)].map((_, i) => (
+              <div key={i} style={{ width: 9, height: 9, borderRadius: '50%', border: '1.5px solid var(--c-border)', background: 'var(--c-bg)', flexShrink: 0 }} />
+            ))}
+          </div>
+
+          {/* Messages */}
+          <div className="ruled" style={{ flex: 1, overflowY: 'auto', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 12, background: 'var(--c-card)' }}>
+            {messages.map((msg) => (
+              <div key={msg.id} style={{ display: 'flex', justifyContent: msg.sender === 'user' ? 'flex-end' : 'flex-start' }}>
+                <div style={{
+                  maxWidth: '82%',
+                  padding: '8px 12px',
+                  borderRadius: msg.sender === 'user' ? '10px 10px 2px 10px' : '10px 10px 10px 2px',
+                  background: msg.sender === 'user' ? 'var(--c-ink)' : 'var(--c-bg)',
+                  color: msg.sender === 'user' ? 'var(--c-bg)' : 'var(--c-mid)',
+                  border: msg.sender === 'user' ? 'none' : '1px solid var(--c-border)',
+                  fontFamily: 'var(--font-sans)', fontSize: '0.8rem', lineHeight: 1.65,
+                }}>
+                  {msg.text}
                 </div>
               </div>
-              <button 
-                onClick={() => setIsOpen(false)}
-                className="p-1 hover:bg-white/10 rounded-lg transition-colors"
-              >
-                <X size={18} />
-              </button>
-            </div>
+            ))}
 
-            {/* Message Area */}
-            <div className="flex-grow overflow-y-auto p-4 space-y-4 bg-slate-50/50 dark:bg-dark-bg/25">
-              {messages.map((msg) => (
-                <div 
-                  key={msg.id}
-                  className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div className={`max-w-[80%] rounded-2xl p-3 text-xs leading-relaxed ${
-                    msg.sender === 'user' 
-                      ? 'bg-blue-600 text-white rounded-tr-none shadow-md' 
-                      : 'bg-white dark:bg-dark-card border border-slate-100 dark:border-dark-border text-slate-800 dark:text-text-primary-dark rounded-tl-none shadow-sm'
-                  }`}>
-                    {msg.text}
-                  </div>
+            {isTyping && (
+              <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                <div style={{ padding: '8px 14px', borderRadius: '10px 10px 10px 2px', background: 'var(--c-bg)', border: '1px solid var(--c-border)', display: 'flex', gap: 5, alignItems: 'center' }}>
+                  {[0, 150, 300].map(d => (
+                    <span key={d} className="animate-bounce" style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--c-faint)', display: 'inline-block', animationDelay: `${d}ms` }} />
+                  ))}
                 </div>
-              ))}
-
-              {/* Typing indicator */}
-              {isTyping && (
-                <div className="flex justify-start">
-                  <div className="bg-white dark:bg-dark-card border border-slate-100 dark:border-dark-border text-slate-800 dark:text-text-primary-dark rounded-2xl rounded-tl-none p-3 shadow-sm flex items-center space-x-1.5">
-                    <span className="w-1.5 h-1.5 bg-slate-400 dark:bg-text-secondary-dark rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <span className="w-1.5 h-1.5 bg-slate-400 dark:bg-text-secondary-dark rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <span className="w-1.5 h-1.5 bg-slate-400 dark:bg-text-secondary-dark rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                  </div>
-                </div>
-              )}
-              <div ref={chatEndRef} />
-            </div>
-
-            {/* Suggestions */}
-            {messages.length === 1 && !isTyping && (
-              <div className="px-4 py-2 bg-slate-50/20 dark:bg-dark-bg/10 flex flex-wrap gap-1.5">
-                {suggestions.map((sug, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => handleSend(sug)}
-                    className="text-[10px] font-medium px-2 py-1 rounded-full border border-slate-200 dark:border-dark-border text-slate-600 hover:text-blue-600 hover:border-blue-600/30 dark:text-text-secondary-dark dark:hover:text-white dark:hover:border-white/30 bg-white/50 dark:bg-dark-card/50 cursor-pointer transition-all"
-                  >
-                    {sug}
-                  </button>
-                ))}
               </div>
             )}
+            <div ref={chatEndRef} />
+          </div>
 
-            {/* Input Form */}
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSend(inputVal);
+          {/* Suggestion chips */}
+          {messages.length === 1 && !isTyping && (
+            <div style={{ padding: '8px 12px', borderTop: '1px dashed var(--c-border)', display: 'flex', flexWrap: 'wrap', gap: 6, background: 'var(--c-bg-warm)', flexShrink: 0 }}>
+              {suggestions.map((s, i) => (
+                <button key={i} onClick={() => handleSend(s)}
+                  className="chip" style={{ fontSize: '0.72rem', cursor: 'pointer' }}>
+                  {s}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Input */}
+          <form onSubmit={e => { e.preventDefault(); handleSend(inputVal); }}
+            style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 12px', borderTop: '1px solid var(--c-border)', background: 'var(--c-card)', flexShrink: 0 }}>
+            <input
+              type="text"
+              value={inputVal}
+              onChange={e => setInputVal(e.target.value)}
+              placeholder="Ask about skills, projects…"
+              style={{
+                flex: 1, background: 'var(--c-bg)', border: '1px solid var(--c-border)',
+                borderRadius: 3, padding: '7px 12px',
+                fontFamily: 'var(--font-sans)', fontSize: '0.8rem', color: 'var(--c-ink)',
+                outline: 'none', transition: 'border-color 0.15s',
               }}
-              className="p-3 border-t border-slate-200 dark:border-dark-border bg-white dark:bg-dark-bg flex items-center space-x-2"
-            >
-              <input
-                type="text"
-                value={inputVal}
-                onChange={(e) => setInputVal(e.target.value)}
-                placeholder="Ask about skills, projects, contact..."
-                className="flex-grow bg-slate-50 dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-xl px-3 py-2 text-xs text-slate-800 dark:text-text-primary-dark focus:outline-none focus:border-blue-500 transition-colors"
-              />
-              <button
-                type="submit"
-                className="p-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center cursor-pointer transition-colors"
-                aria-label="Send Message"
-              >
-                <Send size={14} />
-              </button>
-            </form>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              onFocus={e => e.target.style.borderColor = 'var(--c-rust)'}
+              onBlur={e => e.target.style.borderColor = 'var(--c-border)'}
+            />
+            <button type="submit"
+              style={{
+                width: 34, height: 34, borderRadius: 3, flexShrink: 0,
+                background: 'var(--c-ink)', color: 'var(--c-bg)',
+                border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                cursor: 'pointer', transition: 'opacity 0.15s',
+              }}
+              onMouseEnter={e => e.currentTarget.style.opacity = '0.8'}
+              onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
+              <Send size={13} />
+            </button>
+          </form>
+        </div>
+      )}
     </div>
   );
 };

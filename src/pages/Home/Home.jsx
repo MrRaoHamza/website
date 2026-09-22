@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { BookOpen, Calendar, Clock, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Calendar, Clock, ArrowRight } from 'lucide-react';
 import Hero from '../../components/Hero/Hero';
 import AboutCard from '../../components/AboutCard/AboutCard';
 import Skills from '../../components/Skills/Skills';
@@ -14,88 +13,82 @@ const Home = () => {
   const { blogPosts } = useData();
   const location = useLocation();
 
-  // Scroll to hash on load/redirect
   useEffect(() => {
     if (location.hash) {
       const id = location.hash.replace('#', '');
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
   }, [location]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="space-y-6"
-    >
+    <div>
       <Hero />
       <AboutCard />
       <Skills />
       <ProjectsGallery />
       <Experience />
 
-      {/* Blog Previews Section */}
-      <section id="blog" className="py-24 relative overflow-hidden">
-        {/* Glow indicators */}
-        <div className="absolute top-1/2 right-10 w-[300px] h-[300px] bg-purple-500/5 rounded-full blur-[90px] pointer-events-none" />
+      {/* ── Blog section ── */}
+      <section id="blog" className="nb-section nb-section-tinted"
+        style={{ borderTop: '1px solid var(--c-border)' }}>
+        <div className="max-w-6xl mx-auto px-5 sm:px-8">
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          
-          {/* Section Header */}
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="text-xs font-semibold uppercase tracking-wider text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30 px-3 py-1 rounded-full">
-              Tech Articles
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-bold font-display text-slate-900 dark:text-white mt-4">
-              Latest from the Blog
+          {/* Header */}
+          <div className="flex items-baseline gap-4 mb-10">
+            <span className="section-num">06 —</span>
+            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.8rem,4vw,2.8rem)', color: 'var(--c-ink)', fontWeight: 600 }}>
+              Blog
             </h2>
-            <p className="mt-4 text-slate-500 dark:text-text-secondary-dark text-sm leading-relaxed">
-              Technical articles demystifying neural network foundations, Pandas query pipelines, and machine learning architectures.
-            </p>
+            <span className="hand-note hidden sm:inline-block" style={{ transform: 'rotate(-1deg)' }}>
+              — thoughts &amp; notes 📝
+            </span>
           </div>
 
-          {/* Articles Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Articles grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {blogPosts.map((post) => (
-              <article 
-                key={post.slug}
-                className="group p-6 rounded-2xl bg-white dark:bg-dark-card border border-slate-200/60 dark:border-dark-border/60 shadow-sm hover:shadow-md transition-all flex flex-col justify-between glow-card"
-              >
-                <div>
-                  <div className="flex items-center space-x-4 text-slate-400 dark:text-text-muted-dark text-[10px] sm:text-xs font-semibold mb-3">
-                    <span className="flex items-center">
-                      <Calendar size={12} className="mr-1" />
-                      {post.date}
+              <article key={post.slug} className="index-card flex flex-col group">
+                {/* Top rust strip */}
+                <div style={{ height: 3, background: 'var(--c-rust)', borderRadius: '3px 3px 0 0', flexShrink: 0 }} />
+
+                <div className="p-6 flex flex-col flex-grow">
+                  {/* Meta */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 14 }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 4 }} className="hand-note" >
+                      <Calendar size={11} />
+                      <span style={{ fontSize: '0.78rem' }}>{post.date}</span>
                     </span>
-                    <span className="flex items-center">
-                      <Clock size={12} className="mr-1" />
-                      {post.readTime}
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 4 }} className="hand-note">
+                      <Clock size={11} />
+                      <span style={{ fontSize: '0.78rem' }}>{post.readTime}</span>
                     </span>
                   </div>
-                  
+
+                  {/* Title */}
                   <Link to={`/blog/${post.slug}`}>
-                    <h3 className="text-base sm:text-lg font-bold font-display text-slate-950 dark:text-white group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors">
+                    <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.05rem', color: 'var(--c-ink)', fontWeight: 600, lineHeight: 1.35, marginBottom: 10, transition: 'color 0.15s' }}
+                      onMouseEnter={e => e.currentTarget.style.color = 'var(--c-rust)'}
+                      onMouseLeave={e => e.currentTarget.style.color = 'var(--c-ink)'}>
                       {post.title}
                     </h3>
                   </Link>
-                  
-                  <p className="mt-3 text-slate-500 dark:text-text-secondary-dark text-xs sm:text-sm leading-relaxed line-clamp-3">
+
+                  {/* Excerpt */}
+                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.82rem', color: 'var(--c-mid)', lineHeight: 1.7 }}
+                    className="flex-grow line-clamp-3">
                     {post.excerpt}
                   </p>
-                </div>
 
-                <div className="mt-6 pt-4 border-t border-slate-100 dark:border-dark-border/30">
-                  <Link
-                    to={`/blog/${post.slug}`}
-                    className="flex items-center space-x-1 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
-                  >
-                    <span>Read Article</span>
-                    <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
-                  </Link>
+                  {/* Read link */}
+                  <div style={{ marginTop: 16, paddingTop: 14, borderTop: '1px dashed var(--c-border)' }}>
+                    <Link to={`/blog/${post.slug}`}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontFamily: 'var(--font-hand)', fontSize: '0.95rem', color: 'var(--c-rust)', fontWeight: 600, transition: 'color 0.15s' }}
+                      onMouseEnter={e => e.currentTarget.style.color = 'var(--c-rust-lt)'}
+                      onMouseLeave={e => e.currentTarget.style.color = 'var(--c-rust)'}>
+                      Read Article <ArrowRight size={13} />
+                    </Link>
+                  </div>
                 </div>
               </article>
             ))}
@@ -104,7 +97,7 @@ const Home = () => {
       </section>
 
       <ContactForm />
-    </motion.div>
+    </div>
   );
 };
 
