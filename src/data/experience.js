@@ -25,7 +25,7 @@ export const education = [
     degree: "Matriculation (Science)",
     duration: "2018 – 2020",
     description: "Completed secondary school education with science major subjects.",
-    courses: ["Mathematics", "Physics", "Chemistry", "Computer Science"]
+    courses: ["Mathematics", "Physics", "Chemistry", "Biology"]
   }
 ];
 
