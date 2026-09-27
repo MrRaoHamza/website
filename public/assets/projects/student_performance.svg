@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <defs>
+    <!-- Paper texture background -->
+    <filter id="paper">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feBlend in="SourceGraphic" mode="multiply" result="blend"/>
+      <feComposite in="blend" in2="SourceGraphic" operator="in"/>
+    </filter>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#faf8f4"/>
+      <stop offset="100%" stop-color="#f0ebe0"/>
+    </linearGradient>
+    <linearGradient id="barPass" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8622a"/>
+      <stop offset="100%" stop-color="#e07a45"/>
+    </linearGradient>
+    <linearGradient id="barFail" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5a4e3c"/>
+      <stop offset="100%" stop-color="#9c8e7a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="450" fill="url(#bgGrad)"/>
+
+  <!-- Ruled lines -->
+  <line x1="0" y1="56" x2="800" y2="56" stroke="#cec5b6" stroke-width="0.6" opacity="0.5"/>
+  <line x1="0" y1="84" x2="800" y2="84" stroke="#cec5b6" stroke-width="0.6" opacity="0.5"/>
+  <line x1="0" y1="112" x2="800" y2="112" stroke="#cec5b6" stroke-width="0.6" opacity="0.5"/>
+  <line x1="0" y1="140" x2="800" y2="140" stroke="#cec5b6" stroke-width="0.6" opacity="0.5"/>
+  <line x1="0" y1="168" x2="800" y2="168" stroke="#cec5b6" stroke-width="0.6" opacity="0.5"/>
+  <line x1="0" y1="196" x2="800" y2="196" stroke="#cec5b6" stroke-width="0.6" opacity="0.5"/>
+  <line x1="0" y1="224" x2="800" y2="224" stroke="#cec5b6" stroke-width="0.6" opacity="0.5"/>
+  <line x1="0" y1="252" x2="800" y2="252" stroke="#cec5b6" stroke-width="0.6" opacity="0.5"/>
+  <line x1="0" y1="280" x2="800" y2="280" stroke="#cec5b6" stroke-width="0.6" opacity="0.5"/>
+  <line x1="0" y1="308" x2="800" y2="308" stroke="#cec5b6" stroke-width="0.6" opacity="0.5"/>
+  <line x1="0" y1="336" x2="800" y2="336" stroke="#cec5b6" stroke-width="0.6" opacity="0.5"/>
+  <line x1="0" y1="364" x2="800" y2="364" stroke="#cec5b6" stroke-width="0.6" opacity="0.5"/>
+  <line x1="0" y1="392" x2="800" y2="392" stroke="#cec5b6" stroke-width="0.6" opacity="0.5"/>
+  <line x1="0" y1="420" x2="800" y2="420" stroke="#cec5b6" stroke-width="0.6" opacity="0.5"/>
+
+  <!-- Red margin line -->
+  <line x1="58" y1="0" x2="58" y2="450" stroke="#c8622a" stroke-width="1" opacity="0.3"/>
+
+  <!-- Rust top accent strip -->
+  <rect x="0" y="0" width="800" height="5" fill="#c8622a"/>
+
+  <!-- ── Title block ── -->
+  <text x="80" y="46" font-family="Georgia, serif" font-size="22" font-weight="600" fill="#2c2416" letter-spacing="-0.3">Student Performance Prediction</text>
+  <text x="80" y="68" font-family="Georgia, serif" font-size="12" fill="#9c8e7a" font-style="italic">Machine Learning · Random Forest · Scikit-learn</text>
+
+  <!-- ══ LEFT PANEL — Bar chart ══ -->
+  <!-- Chart title -->
+  <text x="80" y="108" font-family="Georgia, serif" font-size="11" fill="#5a4e3c" font-weight="600">Model Accuracy by Algorithm</text>
+
+  <!-- Y-axis -->
+  <line x1="120" y1="120" x2="120" y2="310" stroke="#cec5b6" stroke-width="1"/>
+  <!-- X-axis -->
+  <line x1="120" y1="310" x2="430" y2="310" stroke="#cec5b6" stroke-width="1"/>
+
+  <!-- Y labels -->
+  <text x="112" y="125" text-anchor="end" font-family="monospace" font-size="9" fill="#9c8e7a">100%</text>
+  <text x="112" y="168" text-anchor="end" font-family="monospace" font-size="9" fill="#9c8e7a">80%</text>
+  <text x="112" y="215" text-anchor="end" font-family="monospace" font-size="9" fill="#9c8e7a">60%</text>
+  <text x="112" y="263" text-anchor="end" font-family="monospace" font-size="9" fill="#9c8e7a">40%</text>
+
+  <!-- Grid lines -->
+  <line x1="120" y1="120" x2="430" y2="120" stroke="#e8e0d4" stroke-width="0.8" stroke-dasharray="4,3"/>
+  <line x1="120" y1="168" x2="430" y2="168" stroke="#e8e0d4" stroke-width="0.8" stroke-dasharray="4,3"/>
+  <line x1="120" y1="215" x2="430" y2="215" stroke="#e8e0d4" stroke-width="0.8" stroke-dasharray="4,3"/>
+  <line x1="120" y1="263" x2="430" y2="263" stroke="#e8e0d4" stroke-width="0.8" stroke-dasharray="4,3"/>
+
+  <!-- Bar: Logistic Regression — 74% -->
+  <rect x="138" y="194" width="42" height="116" fill="url(#barFail)" rx="2"/>
+  <text x="159" y="189" text-anchor="middle" font-family="monospace" font-size="9" fill="#5a4e3c" font-weight="600">74%</text>
+  <text x="159" y="326" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#9c8e7a">Log. Reg.</text>
+
+  <!-- Bar: Decision Tree — 81% -->
+  <rect x="200" y="172" width="42" height="138" fill="url(#barFail)" rx="2"/>
+  <text x="221" y="167" text-anchor="middle" font-family="monospace" font-size="9" fill="#5a4e3c" font-weight="600">81%</text>
+  <text x="221" y="326" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#9c8e7a">Dec. Tree</text>
+
+  <!-- Bar: XGBoost — 86% -->
+  <rect x="262" y="151" width="42" height="159" fill="url(#barFail)" rx="2"/>
+  <text x="283" y="146" text-anchor="middle" font-family="monospace" font-size="9" fill="#5a4e3c" font-weight="600">86%</text>
+  <text x="283" y="326" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#9c8e7a">XGBoost</text>
+
+  <!-- Bar: Random Forest — 88.5% (BEST — rust colour) -->
+  <rect x="324" y="121" width="42" height="189" fill="url(#barPass)" rx="2"/>
+  <text x="345" y="116" text-anchor="middle" font-family="monospace" font-size="10" fill="#c8622a" font-weight="700">88.5%</text>
+  <text x="345" y="326" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#c8622a" font-weight="600">Rnd. Forest</text>
+
+  <!-- Best label arrow -->
+  <text x="390" y="130" font-family="Georgia, serif" font-size="9" fill="#c8622a" font-style="italic">← best</text>
+
+  <!-- ══ RIGHT PANEL — Metrics + Pipeline ══ -->
+
+  <!-- Metrics block -->
+  <text x="470" y="108" font-family="Georgia, serif" font-size="11" fill="#5a4e3c" font-weight="600">Final Model Metrics</text>
+
+  <!-- Metric cards -->
+  <!-- Accuracy -->
+  <rect x="470" y="118" width="90" height="54" rx="3" fill="#fdfbf7" stroke="#cec5b6" stroke-width="1"/>
+  <text x="515" y="138" text-anchor="middle" font-family="monospace" font-size="18" fill="#c8622a" font-weight="700">88.5%</text>
+  <text x="515" y="154" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#9c8e7a">Accuracy</text>
+
+  <!-- Precision -->
+  <rect x="572" y="118" width="90" height="54" rx="3" fill="#fdfbf7" stroke="#cec5b6" stroke-width="1"/>
+  <text x="617" y="138" text-anchor="middle" font-family="monospace" font-size="18" fill="#5a4e3c" font-weight="700">86.2%</text>
+  <text x="617" y="154" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#9c8e7a">Precision</text>
+
+  <!-- Recall -->
+  <rect x="674" y="118" width="90" height="54" rx="3" fill="#fdfbf7" stroke="#cec5b6" stroke-width="1"/>
+  <text x="719" y="138" text-anchor="middle" font-family="monospace" font-size="18" fill="#5a4e3c" font-weight="700">90.1%</text>
+  <text x="719" y="154" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#9c8e7a">Recall</text>
+
+  <!-- Pipeline steps -->
+  <text x="470" y="200" font-family="Georgia, serif" font-size="11" fill="#5a4e3c" font-weight="600">ML Pipeline</text>
+
+  <!-- Step boxes -->
+  <rect x="470" y="210" width="96" height="30" rx="2" fill="#fdfbf7" stroke="#c8622a" stroke-width="1"/>
+  <text x="518" y="229" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#2c2416">Data Loading</text>
+
+  <text x="572" y="228" font-family="monospace" font-size="10" fill="#c8622a">→</text>
+
+  <rect x="582" y="210" width="96" height="30" rx="2" fill="#fdfbf7" stroke="#cec5b6" stroke-width="1"/>
+  <text x="630" y="229" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#2c2416">EDA + Clean</text>
+
+  <text x="684" y="228" font-family="monospace" font-size="10" fill="#c8622a">→</text>
+
+  <rect x="694" y="210" width="72" height="30" rx="2" fill="#fdfbf7" stroke="#cec5b6" stroke-width="1"/>
+  <text x="730" y="229" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#2c2416">SMOTE</text>
+
+  <!-- Row 2 -->
+  <text x="518" y="255" text-anchor="middle" font-family="monospace" font-size="10" fill="#c8622a">↓</text>
+
+  <rect x="470" y="260" width="96" height="30" rx="2" fill="#fdfbf7" stroke="#cec5b6" stroke-width="1"/>
+  <text x="518" y="279" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#2c2416">Feature Eng.</text>
+
+  <text x="572" y="278" font-family="monospace" font-size="10" fill="#c8622a">→</text>
+
+  <rect x="582" y="260" width="96" height="30" rx="2" fill="#fdfbf7" stroke="#cec5b6" stroke-width="1"/>
+  <text x="630" y="279" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#2c2416">GridSearchCV</text>
+
+  <text x="684" y="278" font-family="monospace" font-size="10" fill="#c8622a">→</text>
+
+  <rect x="694" y="260" width="72" height="30" rx="2" fill="#c8622a" stroke="#c8622a" stroke-width="1"/>
+  <text x="730" y="279" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#fff" font-weight="600">Predict</text>
+
+  <!-- Feature importance mini chart -->
+  <text x="470" y="318" font-family="Georgia, serif" font-size="11" fill="#5a4e3c" font-weight="600">Top Features</text>
+
+  <!-- Feature bars -->
+  <text x="470" y="336" font-family="Georgia, serif" font-size="9" fill="#9c8e7a">Past Grades</text>
+  <rect x="560" y="327" width="170" height="10" rx="2" fill="url(#barPass)"/>
+  <text x="736" y="336" font-family="monospace" font-size="8" fill="#c8622a">0.42</text>
+
+  <text x="470" y="354" font-family="Georgia, serif" font-size="9" fill="#9c8e7a">Study Time</text>
+  <rect x="560" y="345" width="110" height="10" rx="2" fill="url(#barFail)"/>
+  <text x="676" y="354" font-family="monospace" font-size="8" fill="#5a4e3c">0.27</text>
+
+  <text x="470" y="372" font-family="Georgia, serif" font-size="9" fill="#9c8e7a">Absences</text>
+  <rect x="560" y="363" width="80" height="10" rx="2" fill="url(#barFail)"/>
+  <text x="646" y="372" font-family="monospace" font-size="8" fill="#5a4e3c">0.19</text>
+
+  <text x="470" y="390" font-family="Georgia, serif" font-size="9" fill="#9c8e7a">Parental Edu</text>
+  <rect x="560" y="381" width="50" height="10" rx="2" fill="url(#barFail)"/>
+  <text x="616" y="390" font-family="monospace" font-size="8" fill="#5a4e3c">0.12</text>
+
+  <!-- ── Bottom info strip ── -->
+  <rect x="0" y="415" width="800" height="35" fill="#f0ebe0"/>
+  <line x1="0" y1="415" x2="800" y2="415" stroke="#cec5b6" stroke-width="1"/>
+
+  <text x="80" y="437" font-family="monospace" font-size="9" fill="#9c8e7a">Dataset: UCI Student Performance · 649 instances · 33 features</text>
+  <text x="470" y="437" font-family="monospace" font-size="9" fill="#c8622a">Random Forest · n_estimators=200 · max_depth=10</text>
+
+  <!-- Handwritten annotation -->
+  <text x="80" y="340" font-family="Georgia, serif" font-size="10" fill="#9c8e7a" font-style="italic" transform="rotate(-2, 80, 340)">33 features →</text>
+</svg>
